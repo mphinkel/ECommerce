@@ -11,9 +11,8 @@
   "profiles": {
     "ECommerce.Api.Customers": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "api/customers",
       "applicationUrl": "http://localhost:5223",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -22,7 +21,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "api/customers",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
