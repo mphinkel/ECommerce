@@ -19,13 +19,13 @@ namespace ECommerce.Api.Search.Services
 			if (!ordersResult.IsSuccess) return (false, null);
 
 			var productsResult = await productsService.GetProductsAsync();
-			if (!productsResult.IsSuccess) return (false, null);
-
 			foreach (var orders in ordersResult.Orders)
 			{
 				foreach (var item in orders.Items)
 				{
-					item.ProductName = productsResult.Products.FirstOrDefault(p => p.Id == item.ProductId)?.Name ?? string.Empty;
+					item.ProductName = productsResult.IsSuccess
+						? productsResult.Products.FirstOrDefault(p => p.Id == item.ProductId)?.Name ?? string.Empty
+						: "Product information is not available";
 				}
 			}
 
