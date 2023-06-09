@@ -20,18 +20,15 @@ namespace ECommerce.Api.Search.Services
 			try
 			{
 				var client = httpClientFactory.CreateClient("OrdersService");
+
 				var response = await client.GetAsync($"api/orders/{customerId}");
+				if (!response.IsSuccessStatusCode) return (false, null, response.ReasonPhrase);
 
-				if (response.IsSuccessStatusCode)
-				{
-					var content = await response.Content.ReadAsByteArrayAsync();
-					var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-					var result = JsonSerializer.Deserialize<IEnumerable<Order>>(content, options);
+				var content = await response.Content.ReadAsByteArrayAsync();
+				var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+				var result = JsonSerializer.Deserialize<IEnumerable<Order>>(content, options);
 
-					return (true, result, null);
-				}
-
-				return (false, null, response.ReasonPhrase);
+				return (true, result, null);
 			}
 			catch (Exception ex)
 			{

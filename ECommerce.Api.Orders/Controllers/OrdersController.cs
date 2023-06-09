@@ -18,12 +18,9 @@ namespace ECommerce.Api.Orders.Controllers
 		public async Task<IActionResult> GetOrdersAsync(int customerId)
 		{
 			var result = await ordersProvider.GetOrdersAsync(customerId);
-			if (result.IsSuccess)
-			{
-				return Ok(result.Orders);
-			}
-
-			return NotFound();
+			return result.IsSuccess
+				? Ok(result.Orders)
+				: NotFound();
 		}
 	}
 }

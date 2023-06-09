@@ -16,61 +16,61 @@ namespace ECommerce.Api.Orders.Providers
 			this.dbContext = dbContext;
 			this.logger = logger;
 			this.mapper = mapper;
+
 			SeedData();
 		}
 
 		private void SeedData()
 		{
-			if (!dbContext.Orders.Any())
+			if (dbContext.Orders.Any()) return;
+
+			dbContext.Orders.Add(new Order
 			{
-				dbContext.Orders.Add(new Order
+				Id = 1,
+				CustomerId = 1,
+				OrderDate = DateTime.Now,
+				Items = new List<OrderItem>
 				{
-					Id = 1,
-					CustomerId = 1,
-					OrderDate = DateTime.Now,
-					Items = new List<OrderItem>
-					{
-						new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 1, ProductId = 2, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 1, ProductId = 3, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
-					},
-					Total = 100
-				});
+					new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 1, ProductId = 2, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 1, ProductId = 3, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
+				},
+				Total = 100
+			});
 
-				dbContext.Orders.Add(new Order
+			dbContext.Orders.Add(new Order
+			{
+				Id = 2,
+				CustomerId = 1,
+				OrderDate = DateTime.Now.AddDays(-1),
+				Items = new List<OrderItem>
 				{
-					Id = 2,
-					CustomerId = 1,
-					OrderDate = DateTime.Now.AddDays(-1),
-					Items = new List<OrderItem>
-					{
-						new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 1, ProductId = 2, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 1, ProductId = 3, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
-					},
-					Total = 100
-				});
+					new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 1, ProductId = 2, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 1, ProductId = 3, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
+				},
+				Total = 100
+			});
 
-				dbContext.Orders.Add(new Order
+			dbContext.Orders.Add(new Order
+			{
+				Id = 3,
+				CustomerId = 2,
+				OrderDate = DateTime.Now,
+				Items = new List<OrderItem>
 				{
-					Id = 3,
-					CustomerId = 2,
-					OrderDate = DateTime.Now,
-					Items = new List<OrderItem>
-					{
-						new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
-						new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
-					},
-					Total = 100
-				});
+					new() { OrderId = 1, ProductId = 1, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 2, ProductId = 2, Quantity = 10, UnitPrice = 10 },
+					new() { OrderId = 3, ProductId = 3, Quantity = 1, UnitPrice = 100 }
+				},
+				Total = 100
+			});
 
-				dbContext.SaveChanges();
-			}
+			dbContext.SaveChanges();
 		}
 
 		public async Task<(bool IsSuccess, IEnumerable<Models.Order> Orders, string ErrorMessage)> GetOrdersAsync(int customerId)
@@ -82,10 +82,9 @@ namespace ECommerce.Api.Orders.Providers
 					.Include(o => o.Items)
 					.ToListAsync();
 
-				if (!orders.Any()) 
-					return (false, null, "Not Found");
+				if (!orders.Any()) return (false, null, "Not Found");
 
-				var result = mapper.Map<IEnumerable<Db.Order>, IEnumerable<Models.Order>>(orders);
+				var result = mapper.Map<IEnumerable<Order>, IEnumerable<Models.Order>>(orders);
 				return (true, result, null);
 			}
 			catch (Exception ex)

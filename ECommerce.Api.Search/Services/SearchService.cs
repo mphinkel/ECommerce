@@ -16,22 +16,20 @@ namespace ECommerce.Api.Search.Services
 		public async Task<(bool IsSuccess, dynamic SearchResults)> SearchAsync(int customerId)
 		{
 			var ordersResult = await ordersService.GetOrdersAsync(customerId);
+			if (!ordersResult.IsSuccess) return (false, null);
+
 			var productsResult = await productsService.GetProductsAsync();
+			if (!productsResult.IsSuccess) return (false, null);
 
-			if (ordersResult.IsSuccess)
+			foreach (var orders in ordersResult.Orders)
 			{
-				foreach (var orders in ordersResult.Orders)
+				foreach (var item in orders.Items)
 				{
-					foreach (var item in orders.Items)
-					{
-						item.ProductName = productsResult.Products.FirstOrDefault(p => p.Id == item.ProductId)?.Name ?? string.Empty;
-					}
+					item.ProductName = productsResult.Products.FirstOrDefault(p => p.Id == item.ProductId)?.Name ?? string.Empty;
 				}
-
-				return (true, ordersResult.Orders);
 			}
 
-			return (false, null);
+			return (true, ordersResult.Orders);
 		}
 	}
 }
