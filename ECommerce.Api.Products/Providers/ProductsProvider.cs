@@ -33,7 +33,7 @@ namespace ECommerce.Api.Products.Providers
 			dbContext.SaveChanges();
 		}
 
-		public async Task<(bool IsSuccess, IEnumerable<Models.Product>? Products, string? ErrorMessage)> GetProductsAsync()
+		public async Task<(bool IsSuccess, IEnumerable<Models.Product> Products, string ErrorMessage)> GetProductsAsync()
 		{
 			try
 			{
