@@ -8,14 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<ICustomersService, CustomersService>();
 
 builder.Services.AddHttpClient<OrdersService>(config =>
 {
 	config.BaseAddress = new Uri(builder.Configuration["Services:Orders"]);
 });
+
 builder.Services.AddHttpClient<ProductsService>(config =>
 {
 	config.BaseAddress = new Uri(builder.Configuration["Services:Products"]);
+}).AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(5, _ => TimeSpan.FromMilliseconds(500)));
+
+builder.Services.AddHttpClient<CustomersService>(config =>
+{
+	config.BaseAddress = new Uri(builder.Configuration["Services:Customers"]);
 }).AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(5, _ => TimeSpan.FromMilliseconds(500)));
 
 builder.Services.AddControllers();
