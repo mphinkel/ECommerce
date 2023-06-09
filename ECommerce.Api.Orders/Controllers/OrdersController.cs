@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Orders.Controllers
 {
-	[ApiController]
 	[Route("api/orders")]
+	[ApiController]
 	public class OrdersController : ControllerBase
 	{
 		private readonly IOrdersProvider ordersProvider;

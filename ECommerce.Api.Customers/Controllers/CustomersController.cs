@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Customers.Controllers
 {
-	[ApiController]
 	[Route("api/customers")]
+	[ApiController]
 	public class CustomersController : ControllerBase
 	{
 		private readonly ICustomersProvider customersProvider;
@@ -13,7 +13,7 @@ namespace ECommerce.Api.Customers.Controllers
 		{
 			this.customersProvider = customersProvider;
 		}
-		
+
 		[HttpGet]
 		public async Task<IActionResult> GetCustomersAsync()
 		{

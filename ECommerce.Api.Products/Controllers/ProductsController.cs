@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Products.Controllers
 {
-	[ApiController]
 	[Route("api/products")]
+	[ApiController]
 	public class ProductsController : ControllerBase
 	{
 		private readonly IProductsProvider productsProvider;
