@@ -24,9 +24,9 @@ namespace ECommerce.Api.Customers.Providers
 		{
 			if (dbContext.Customers.Any()) return;
 
-			dbContext.Customers.Add(new Customer { Id = 1, Name = "Jessica Smith", Address = "20 Elm St." });
-			dbContext.Customers.Add(new Customer { Id = 2, Name = "John Smith", Address = "30 Main St." });
-			dbContext.Customers.Add(new Customer { Id = 3, Name = "William Johnson", Address = "100 10th St." });
+			dbContext.Customers.Add(new Customer { CustomerId = 1, Name = "Jessica Smith", Address = "20 Elm St." });
+			dbContext.Customers.Add(new Customer { CustomerId = 2, Name = "John Smith", Address = "30 Main St." });
+			dbContext.Customers.Add(new Customer { CustomerId = 3, Name = "William Johnson", Address = "100 10th St." });
 			dbContext.SaveChanges();
 		}
 
@@ -51,7 +51,7 @@ namespace ECommerce.Api.Customers.Providers
 		{
 			try
 			{
-				var customer = await dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+				var customer = await dbContext.Customers.FirstOrDefaultAsync(c => c.CustomerId == id);
 				if (customer is null) return (false, null, "Not Found");
 
 				var result = mapper.Map<Customer, Models.Customer>(customer);
@@ -61,6 +61,61 @@ namespace ECommerce.Api.Customers.Providers
 			{
 				logger.LogError(ex.ToString());
 				return (false, null, ex.Message);
+			}
+		}
+
+		public async Task<(bool IsSuccess, string ErrorMessage)> SaveCustomerAsync(Models.Customer customer)
+		{
+			try
+			{
+				var result = mapper.Map<Models.Customer, Customer>(customer);
+
+				await dbContext.Customers.AddAsync(result);
+				await dbContext.SaveChangesAsync();
+
+				return (true, null);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.ToString());
+				return (false, ex.Message);
+			}
+		}
+
+		public async Task<(bool IsSuccess, string ErrorMessage)> UpdateCustomerAsync(Models.Customer customer)
+		{
+			try
+			{
+				var result = mapper.Map<Models.Customer, Customer>(customer);
+
+				dbContext.Customers.Update(result);
+				await dbContext.SaveChangesAsync();
+
+				return (true, null);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.ToString());
+				return (false, ex.Message);
+			}
+		}
+
+		public async Task<(bool IsSuccess, string ErrorMessage)> DeleteCustomerAsync(int customerId)
+		{
+			try
+			{
+				var customer = await dbContext.Customers.FindAsync(customerId);
+				if (customer == null) return (false, "Not Found");
+
+				dbContext.Remove(customer);
+				await dbContext.SaveChangesAsync();
+
+				return (true, null);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.ToString());
+				return (false, ex.Message);
 			}
 		}
 	}

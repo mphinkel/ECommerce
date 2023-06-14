@@ -1,4 +1,5 @@
 ﻿using ECommerce.Api.Customers.Interfaces;
+using ECommerce.Api.Customers.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Customers.Controllers
@@ -29,6 +30,30 @@ namespace ECommerce.Api.Customers.Controllers
 			var result = await customersProvider.GetCustomerAsync(id);
 			return result.IsSuccess
 				? Ok(result.Customer)
+				: NotFound();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult<Customer>> SaveCustomerAsync(Customer customer) {
+			var result = await customersProvider.SaveCustomerAsync(customer);
+			return result.IsSuccess
+				? Ok()
+				: NotFound();
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> UpdateCustomerAsync(Customer customer) {
+			var result = await customersProvider.UpdateCustomerAsync(customer);
+			return result.IsSuccess
+				? Ok()
+				: NotFound();
+		}
+
+		[HttpDelete ("{customerId}")]
+		public async Task<ActionResult> DeleteCustomerAsync(int customerId) {
+			var result = await customersProvider.DeleteCustomerAsync(customerId);
+			return result.IsSuccess
+				? Ok()
 				: NotFound();
 		}
 	}
