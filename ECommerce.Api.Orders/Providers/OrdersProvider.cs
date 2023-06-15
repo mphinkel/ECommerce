@@ -26,7 +26,7 @@ namespace ECommerce.Api.Orders.Providers
 
 			dbContext.Orders.Add(new Order
 			{
-				Id = 1,
+				OrderId = 1,
 				CustomerId = 1,
 				OrderDate = DateTime.Now,
 				Items = new List<OrderItem>
@@ -42,7 +42,7 @@ namespace ECommerce.Api.Orders.Providers
 
 			dbContext.Orders.Add(new Order
 			{
-				Id = 2,
+				OrderId = 2,
 				CustomerId = 1,
 				OrderDate = DateTime.Now.AddDays(-1),
 				Items = new List<OrderItem>
@@ -58,7 +58,7 @@ namespace ECommerce.Api.Orders.Providers
 
 			dbContext.Orders.Add(new Order
 			{
-				Id = 3,
+				OrderId = 3,
 				CustomerId = 2,
 				OrderDate = DateTime.Now,
 				Items = new List<OrderItem>

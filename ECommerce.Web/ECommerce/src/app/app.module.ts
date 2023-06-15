@@ -10,11 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { OrdersPageComponent } from './orders-page/orders-page.component';
+import { OrdersService } from './orders.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomersPageComponent
+    CustomersPageComponent,
+    OrdersPageComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ReactiveFormsModule,
     ModalModule.forRoot()
   ],
-  providers: [ HttpClientModule, CustomersService ],
+  providers: [ HttpClientModule, CustomersService, OrdersService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

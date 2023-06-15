@@ -1,7 +1,8 @@
 import { CustomersService } from './../customers.service';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Customer } from 'src/app/Customer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers-page',
@@ -19,7 +20,7 @@ export class CustomersPageComponent implements OnInit {
   viewTable: boolean = true;
   viewForm: boolean = false;
 
-  constructor(private customersService: CustomersService) {}
+  constructor(private customersService: CustomersService, private router: Router) {}
 
   ngOnInit(): void {
     this.customersService.GetCustomers()
@@ -37,7 +38,7 @@ export class CustomersPageComponent implements OnInit {
         address: new FormControl(null)
       });
     }
-  
+    
     Voltar(): void {
       this.viewForm = true;
       this.viewForm = false;
@@ -94,5 +95,11 @@ export class CustomersPageComponent implements OnInit {
           this.customers = records;
         });
       });
+    }
+
+    ViewOrders(customerId: any): void {
+      this.router.navigate(['/orders'],
+        { queryParams: {customerId: customerId }}
+      );
     }
   }

@@ -1,10 +1,14 @@
 <div class="container p-5" *ngIf="viewTable">
     <div class="border boder-light rounded p-5">
+      <h1>Customers</h1>
+
+      <hr />
+
       <div>
         <button type="button" class="btn btn-sm btn-secondary" (click)="ShowAddForm()">New Customer</button>
       </div>
-  
-      <hr />
+
+      <br />
   
       <table class="table table-striped table-hover table-sm" *ngIf="customers">
         <tr class="thead-light">
@@ -17,7 +21,8 @@
           <td>{{ customer.name }}</td>
           <td>{{ customer.address }}</td>
           <td>
-            <button type="button" class="btn btn-sm btn-outline-info" (click)="ShowUpdateForm(customer.customerId)">Update</button>|
+            <button type="button" class="btn btn-sm btn-outline-info" (click)="ViewOrders(customer.customerId)">View Orders</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-outline-info" (click)="ShowUpdateForm(customer.customerId)">Update</button>&nbsp;&nbsp;|&nbsp;&nbsp;
             <button type="button" class="btn btn-sm btn-outline-danger" (click)="DeleteCustomer(customer.customerId)">Delete</button>
           </td>
         </tr>
